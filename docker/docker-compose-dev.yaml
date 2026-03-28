@@ -3,11 +3,11 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.dev
-    container_name: personal-finance-mastra
+    container_name: personal-finance-mastra-dev
     restart: unless-stopped
-    # command: ["mastra", "dev"]
+    command: ["mastra", "dev"]
     environment:
-      LOG_LEVEL: "info"
+      LOG_LEVEL: "debug"
       PORT: ${PORT:-4111}
       MASTRA_HOST: ${MASTRA_HOST:-0.0.0.0}
       POSTGRES_HOST: ${POSTGRES_HOST:-postgresql}
@@ -29,7 +29,7 @@ services:
       #   condition: service_healthy
   postgresql:
     image: postgres:17-alpine
-    container_name: personal-finance-postgres
+    container_name: personal-finance-postgres-dev
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-personal_finance_agent}
@@ -38,7 +38,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_dev:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-personal_finance_agent}"]
       interval: 10s
@@ -47,13 +47,13 @@ services:
       start_period: 10s
   # qdrant:
   #   image: qdrant/qdrant:latest
-  #   container_name: personal-finance-qdrant
+  #   container_name: personal-finance-qdrant-dev
   #   restart: unless-stopped
   #   ports:
   #     - "6333:6333"
   #     - "6334:6334"
   #   volumes:
-  #     - qdrant_data:/qdrant/storage
+  #     - qdrant_data_dev:/qdrant/storage
   #   healthcheck:
   #     test:
   #       - CMD-SHELL
@@ -64,5 +64,5 @@ services:
   #     start_period: 10s
 
 volumes:
-  postgres_data:
-  # qdrant_data:
+  postgres_data_dev:
+  # qdrant_data_dev:
