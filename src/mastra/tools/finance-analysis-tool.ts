@@ -222,9 +222,9 @@ function pickHighestPriority(input: {
 }
 
 function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('zh-CN', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CNY',
     maximumFractionDigits: 0,
   }).format(amount);
 }

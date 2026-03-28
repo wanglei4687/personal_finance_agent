@@ -71,7 +71,7 @@ const writeCoachingSummary = createStep({
       throw new Error('Analysis data not found');
     }
 
-    const agent = mastra?.getAgent('personalFinanceAgent');
+    const agent = mastra?.getAgent('personal-finance-agent');
     if (!agent) {
       throw new Error('Personal finance agent not found');
     }

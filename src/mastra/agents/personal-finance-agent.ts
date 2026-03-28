@@ -1,6 +1,6 @@
 import { Agent } from '@mastra/core/agent';
-import { Memory } from '@mastra/memory';
 import { getAirtableTools } from '../mcp/airtable-client';
+import { getPersonalFinanceMemory } from '../storage';
 import { financeAnalysisTool } from '../tools/finance-analysis-tool';
 
 const airtableTools = await getAirtableTools();
@@ -32,5 +32,5 @@ export const personalFinanceAgent = new Agent({
   `,
   model: 'openrouter/anthropic/claude-sonnet-4.5',
   tools: { financeAnalysisTool, ...airtableTools },
-  memory: new Memory(),
+  memory: getPersonalFinanceMemory(),
 });
