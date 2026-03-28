@@ -11,8 +11,6 @@ COPY src ./src
 
 RUN mastra build --studio
 
-RUN pnpm build
-
 
 FROM node:25-alpine AS runner
 

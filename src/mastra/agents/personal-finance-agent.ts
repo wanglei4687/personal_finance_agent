@@ -30,7 +30,7 @@ export const personalFinanceAgent = new Agent({
     - Include the most relevant ratios or total
     - End with 2-4 concrete next actions
   `,
-  model: 'openrouter/openai/',
+  model: 'openrouter/openai/gpt-4o-mini',
   tools: { financeAnalysisTool, ...airtableTools },
   memory: getPersonalFinanceMemory(),
 });
