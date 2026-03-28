@@ -5,8 +5,9 @@ services:
       dockerfile: docker/Dockerfile
     container_name: personal-finance-mastra
     restart: unless-stopped
-    command: ["mastra", "dev"]
+    # command: ["mastra", "dev"]
     environment:
+      LOG_LEVEL: "info"
       PORT: ${PORT:-4111}
       MASTRA_HOST: ${MASTRA_HOST:-0.0.0.0}
       POSTGRES_HOST: ${POSTGRES_HOST:-postgresql}

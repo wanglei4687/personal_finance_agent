@@ -9,26 +9,28 @@ RUN pnpm install --frozen-lockfile
 
 COPY src ./src
 
-# RUN mastra build --studio
+RUN mastra build --studio
+
+RUN pnpm build
 
 
-# FROM node:25-alpine AS runner
+FROM node:25-alpine AS runner
 
-# WORKDIR /app
+WORKDIR /app
 
-# ENV NODE_ENV=production
-# ENV PORT=4111
-# ENV MASTRA_HOST=0.0.0.0
+ENV NODE_ENV=production
+ENV PORT=4111
+ENV MASTRA_HOST=0.0.0.0
 
-# RUN npm install -g pnpm
+RUN npm install -g pnpm mastra
 
-# COPY --from=builder /app/.mastra/output/package.json ./package.json
-# COPY --from=builder /app/.mastra/output/.npmrc ./.npmrc
+COPY --from=builder /app/.mastra/output/package.json ./package.json
+COPY --from=builder /app/.mastra/output/.npmrc ./.npmrc
 
-# RUN pnpm install --prod --frozen-lockfile=false
+RUN pnpm install --prod --frozen-lockfile=false
 
-# COPY --from=builder /app/.mastra/output ./
+COPY --from=builder /app/.mastra/output ./
 
-# EXPOSE 4111
+EXPOSE 4111
 
-# CMD ["node", "index.mjs"]
+CMD ["mastra", "start", "--dir", "."]

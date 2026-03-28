@@ -1,6 +1,7 @@
 
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
+import type { LogLevel } from '@mastra/loggers';
 import { Observability, DefaultExporter, SensitiveDataFilter } from '@mastra/observability';
 import { financialCheckInWorkflow } from './workflows/financial-check-in-workflow';
 import { personalFinanceAgent } from './agents/personal-finance-agent';
@@ -9,6 +10,17 @@ import { storage } from './storage';
 
 const port = Number(process.env.PORT ?? 4111);
 const host = process.env.MASTRA_HOST ?? '0.0.0.0';
+const validLogLevels: readonly LogLevel[] = ['debug', 'info', 'warn', 'error'];
+
+function getLogLevel(value: string | undefined): LogLevel {
+  if (value && validLogLevels.includes(value as LogLevel)) {
+    return value as LogLevel;
+  }
+
+  return 'info';
+}
+
+const logLevel = getLogLevel(process.env.LOG_LEVEL);
 const observabilityEnabled = process.env.MASTRA_OBSERVABILITY_ENABLED !== 'false';
 
 export const mastra = new Mastra({
@@ -22,7 +34,7 @@ export const mastra = new Mastra({
   storage,
   logger: new PinoLogger({
     name: 'Mastra',
-    level: 'debug',
+    level: logLevel,
   }),
   observability: observabilityEnabled
     ? new Observability({
