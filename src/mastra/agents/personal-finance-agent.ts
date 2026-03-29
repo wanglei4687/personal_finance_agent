@@ -10,7 +10,7 @@ export const personalFinanceAgent = new Agent({
   id: 'personal-finance-agent',
   name: 'Personal Finance Agent',
   instructions: PERSONAL_FINANCE_AGENT_INSTRUCTIONS,
-  model: 'openrouter/openai/gpt-4o-mini',
+  model: 'openrouter/openai/gpt-5.4',
   tools: { financeAnalysisTool, ...airtableTools },
   memory: getPersonalFinanceMemory(),
 });
