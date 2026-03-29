@@ -1,0 +1,12 @@
+.env
+node_modules/
+.mastra/
+.agents/
+AGENTS.md
+.git/
+.env.example
+.pnpm-store/
+docker/
+.env
+LICENSE
+README.md
