@@ -3,7 +3,7 @@ import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
 import type { LogLevel } from '@mastra/loggers';
 import { Observability, DefaultExporter, SensitiveDataFilter } from '@mastra/observability';
-import { financialCheckInWorkflow } from './workflows/financial-check-in-workflow';
+import { financialCheckInWorkflow } from './workflows/personal-finance-report';
 import { personalFinanceAgent } from './agents/personal-finance-agent';
 import { ensureStoredPersonalFinanceAgent } from './editor-sync';
 import { storage } from './storage';

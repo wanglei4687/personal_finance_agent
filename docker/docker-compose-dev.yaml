@@ -1,30 +1,30 @@
 services:
-  mastra:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.dev
-    container_name: personal-finance-mastra-dev
-    restart: unless-stopped
-    command: ["mastra", "dev"]
-    environment:
-      LOG_LEVEL: "debug"
-      PORT: ${PORT:-4111}
-      MASTRA_HOST: ${MASTRA_HOST:-0.0.0.0}
-      POSTGRES_HOST: ${POSTGRES_HOST:-postgresql}
-      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      MASTRA_OBSERVABILITY_ENABLED: ${MASTRA_OBSERVABILITY_ENABLED:-true}
-      POSTGRES_DB: ${POSTGRES_DB:-personal_finance_agent}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
-      AIRTABLE_PAT: ${AIRTABLE_PAT:-}
-      AIRTABLE_MCP_URL: ${AIRTABLE_MCP_URL:-https://mcp.airtable.com/mcp}
-      MASTRA_CLOUD_ACCESS_TOKEN: ${MASTRA_CLOUD_ACCESS_TOKEN:-}
-    ports:
-      - "4111:4111"
-    depends_on:
-      postgresql:
-        condition: service_healthy
+  # mastra:
+  #   build:
+  #     context: ..
+  #     dockerfile: docker/Dockerfile.dev
+  #   container_name: personal-finance-mastra-dev
+  #   restart: unless-stopped
+  #   command: ["mastra", "dev"]
+  #   environment:
+  #     LOG_LEVEL: "debug"
+  #     PORT: ${PORT:-4111}
+  #     MASTRA_HOST: ${MASTRA_HOST:-0.0.0.0}
+  #     POSTGRES_HOST: ${POSTGRES_HOST:-postgresql}
+  #     POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+  #     MASTRA_OBSERVABILITY_ENABLED: ${MASTRA_OBSERVABILITY_ENABLED:-true}
+  #     POSTGRES_DB: ${POSTGRES_DB:-personal_finance_agent}
+  #     POSTGRES_USER: ${POSTGRES_USER:-postgres}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+  #     OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+  #     AIRTABLE_PAT: ${AIRTABLE_PAT:-}
+  #     AIRTABLE_MCP_URL: ${AIRTABLE_MCP_URL:-https://mcp.airtable.com/mcp}
+  #     MASTRA_CLOUD_ACCESS_TOKEN: ${MASTRA_CLOUD_ACCESS_TOKEN:-}
+  #   ports:
+  #     - "4111:4111"
+  #   depends_on:
+  #     postgresql:
+  #       condition: service_healthy
       # qdrant:
       #   condition: service_healthy
   postgresql:

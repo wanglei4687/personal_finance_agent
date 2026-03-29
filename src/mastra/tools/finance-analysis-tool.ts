@@ -1,5 +1,6 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
+import { calculateRatio, formatCurrency } from '../../utils/finance';
 
 const expenseSchema = z.object({
   name: z.string().describe('Expense label'),
@@ -99,14 +100,15 @@ export function analyzeFinancialProfile(
     (total: number, debt: DebtEntry) => total + debt.minimumPayment,
     0,
   );
-  const debtToIncomeRate = ratio(
+  const debtToIncomeRate = calculateRatio(
     Math.max(debtPayments, debtMinimums),
     monthlyIncome,
+    0,
   );
-  const savingsRate = ratio(savingsContributions, monthlyIncome);
-  const essentialRate = ratio(essentialSpending, monthlyIncome);
-  const discretionaryRate = ratio(discretionarySpending, monthlyIncome);
-  const debtPaymentRate = ratio(debtPayments, monthlyIncome);
+  const savingsRate = calculateRatio(savingsContributions, monthlyIncome, 0);
+  const essentialRate = calculateRatio(essentialSpending, monthlyIncome, 0);
+  const discretionaryRate = calculateRatio(discretionarySpending, monthlyIncome, 0);
+  const debtPaymentRate = calculateRatio(debtPayments, monthlyIncome, 0);
   const savingsGoalGap = Math.max(0, savingsGoal - savingsContributions);
 
   const emergencyFundStatus: FinancialAnalysis['emergencyFundStatus'] =
@@ -144,7 +146,10 @@ export function analyzeFinancialProfile(
 
   if (savingsGoalGap > 0 && netCashFlow > 0) {
     recommendations.push(
-      `Redirect ${formatCurrency(Math.min(netCashFlow, savingsGoalGap))} of monthly surplus toward the stated savings goal.`,
+      `Redirect ${formatCurrency(Math.min(netCashFlow, savingsGoalGap), {
+        locale: 'en-US',
+        maximumFractionDigits: 0,
+      })} of monthly surplus toward the stated savings goal.`,
     );
   }
 
@@ -188,14 +193,6 @@ function sumByType(
     .reduce((total, expense) => total + expense.amount, 0);
 }
 
-function ratio(amount: number, income: number): number {
-  if (income <= 0) {
-    return 0;
-  }
-
-  return Number((amount / income).toFixed(4));
-}
-
 function pickHighestPriority(input: {
   netCashFlow: number;
   emergencyFundStatus: 'unknown' | 'low' | 'healthy';
@@ -219,12 +216,4 @@ function pickHighestPriority(input: {
   }
 
   return 'Maintain the current plan and monitor spending drift';
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('zh-CN', {
-    style: 'currency',
-    currency: 'CNY',
-    maximumFractionDigits: 0,
-  }).format(amount);
 }
