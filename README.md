@@ -37,6 +37,25 @@ AIRTABLE_MCP_URL=https://mcp.airtable.com/mcp
 
 The default endpoint is Airtable's official MCP server. When `AIRTABLE_PAT` is present, the agent will attempt to load Airtable MCP tools at startup and expose them alongside the finance tool.
 
+## PostgreSQL Market Data MCP
+
+This project now also registers a local MCP server in `src/mastra/mcp/postgres-market-server.ts`.
+
+It exposes read-only tools over these PostgreSQL objects:
+
+- `market_instruments`
+- `market_daily_prices`
+- `market_daily_change_stats`
+
+Available tools:
+
+- `search_market_instruments`
+- `get_market_price_history`
+- `get_market_change_stats`
+- `get_latest_market_snapshot`
+
+The server reuses the same `POSTGRES_*` / `DATABASE_URL` settings already used by Mastra storage, so no extra database configuration is required.
+
 ## What The Agent Does
 
 The agent is designed for practical household-finance support:

@@ -1,5 +1,6 @@
 import { FilesystemStore, MastraCompositeStore } from '@mastra/core/storage';
 import { Memory } from '@mastra/memory';
+import type { DbClient } from '@mastra/pg';
 import { MemoryPG, ObservabilityPG, PostgresStore, ScoresPG, WorkflowsPG } from '@mastra/pg';
 
 declare global {
@@ -18,7 +19,7 @@ function requireEnv(name: string): string {
   return value;
 }
 
-function getPostgresConnectionString(): string {
+export function getPostgresConnectionString(): string {
   if (process.env.DATABASE_URL) {
     return process.env.DATABASE_URL;
   }
@@ -32,7 +33,7 @@ function getPostgresConnectionString(): string {
   return `postgresql://${user}:${password}@${host}:${port}/${database}`;
 }
 
-function getPostgresStore(): PostgresStore {
+export function getPostgresStore(): PostgresStore {
   if (!globalThis.mastraPostgresStore) {
     globalThis.mastraPostgresStore = new PostgresStore({
       id: 'mastra-postgres',
@@ -41,6 +42,10 @@ function getPostgresStore(): PostgresStore {
   }
 
   return globalThis.mastraPostgresStore;
+}
+
+export function getPostgresDb(): DbClient {
+  return getPostgresStore().db;
 }
 
 function getCompositeStorage(): MastraCompositeStore {

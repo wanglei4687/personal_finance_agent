@@ -6,6 +6,7 @@ import { Observability, DefaultExporter, SensitiveDataFilter } from '@mastra/obs
 import { financialCheckInWorkflow } from './workflows/personal-finance-report';
 import { personalFinanceAgent } from './agents/personal-finance-agent';
 import { ensureStoredPersonalFinanceAgent } from './editor-sync';
+import { postgresMarketDataMcpServer } from './mcp/postgres-market-server';
 import { storage } from './storage';
 
 const port = Number(process.env.PORT ?? 4111);
@@ -31,6 +32,7 @@ export const mastra = new Mastra({
   },
   workflows: { financialCheckInWorkflow },
   agents: { 'personal-finance-agent': personalFinanceAgent },
+  mcpServers: { postgresMarketData: postgresMarketDataMcpServer },
   storage,
   logger: new PinoLogger({
     name: 'Mastra',
