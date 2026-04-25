@@ -56,6 +56,16 @@ Available tools:
 
 The server reuses the same `POSTGRES_*` / `DATABASE_URL` settings already used by Mastra storage, so no extra database configuration is required.
 
+## Market Trend Agent
+
+This project also includes `market-index-trend-agent`, a dedicated agent for market index and benchmark trend analysis.
+
+It uses:
+
+- `calculate-market-index-trends`
+- `search_market_instruments`
+- PostgreSQL historical price data already loaded into `market_daily_prices`
+
 ## What The Agent Does
 
 The agent is designed for practical household-finance support:

@@ -7,6 +7,7 @@ declare global {
   var mastraPostgresStore: PostgresStore | undefined;
   var mastraStorage: MastraCompositeStore | undefined;
   var personalFinanceMemory: Memory | undefined;
+  var marketTrendMemory: Memory | undefined;
 }
 
 function requireEnv(name: string): string {
@@ -82,4 +83,17 @@ export function getPersonalFinanceMemory(): Memory {
   }
 
   return globalThis.personalFinanceMemory;
+}
+
+export function getMarketTrendMemory(): Memory {
+  if (!globalThis.marketTrendMemory) {
+    globalThis.marketTrendMemory = new Memory({
+      storage,
+      options: {
+        lastMessages: 12,
+      },
+    });
+  }
+
+  return globalThis.marketTrendMemory;
 }
