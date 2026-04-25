@@ -1,0 +1,10 @@
+FROM node:25-alpine
+
+WORKDIR /app
+
+RUN npm install -g pnpm mastra
+
+COPY package.json pnpm-lock.yaml tsconfig.json .npmrc ./
+RUN pnpm install --frozen-lockfile
+
+COPY src ./src

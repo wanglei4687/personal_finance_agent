@@ -1,0 +1,68 @@
+services:
+  # mastra:
+  #   build:
+  #     context: ..
+  #     dockerfile: docker/Dockerfile.dev
+  #   container_name: personal-finance-mastra-dev
+  #   restart: unless-stopped
+  #   command: ["mastra", "dev"]
+  #   environment:
+  #     LOG_LEVEL: "debug"
+  #     PORT: ${PORT:-4111}
+  #     MASTRA_HOST: ${MASTRA_HOST:-0.0.0.0}
+  #     POSTGRES_HOST: ${POSTGRES_HOST:-postgresql}
+  #     POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+  #     MASTRA_OBSERVABILITY_ENABLED: ${MASTRA_OBSERVABILITY_ENABLED:-true}
+  #     POSTGRES_DB: ${POSTGRES_DB:-personal_finance_agent}
+  #     POSTGRES_USER: ${POSTGRES_USER:-postgres}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+  #     OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+  #     AIRTABLE_PAT: ${AIRTABLE_PAT:-}
+  #     AIRTABLE_MCP_URL: ${AIRTABLE_MCP_URL:-https://mcp.airtable.com/mcp}
+  #     MASTRA_CLOUD_ACCESS_TOKEN: ${MASTRA_CLOUD_ACCESS_TOKEN:-}
+  #   ports:
+  #     - "4111:4111"
+  #   depends_on:
+  #     postgresql:
+  #       condition: service_healthy
+      # qdrant:
+      #   condition: service_healthy
+  postgresql:
+    image: postgres:17-alpine
+    container_name: personal-finance-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-personal_finance_agent}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-personal_finance_agent}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  # qdrant:
+  #   image: qdrant/qdrant:latest
+  #   container_name: personal-finance-qdrant-dev
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6333:6333"
+  #     - "6334:6334"
+  #   volumes:
+  #     - qdrant_data_dev:/qdrant/storage
+  #   healthcheck:
+  #     test:
+  #       - CMD-SHELL
+  #       - bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 10s
+
+volumes:
+  postgres_data_dev:
+  # qdrant_data_dev:

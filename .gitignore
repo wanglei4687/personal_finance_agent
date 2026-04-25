@@ -9,3 +9,5 @@ dist
 .netlify
 .vercel
 public/*
+.DS_Store
+.pnpm-store/
